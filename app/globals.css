@@ -1,26 +1,60 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: var(--font-nunito-sans);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Backgrounds */
+  --bg-page:    #e8eef5;
+  --bg-surface: #edf2f7;
+  --bg-hover:   #dde5ef;
+  --bg-border:  #cbd5e0;
+
+  /* Text */
+  --text-primary:   #1a202c;
+  --text-secondary: #4a5568;
+  --text-muted:     #718096;
+
+  /* Millennium Jade */
+  --jade-100: #d4f5e4;
+  --jade-400: #5bbd8a;
+  --jade-600: #2e8c5e;
+  --jade-800: #1a5c3e;
+
+  /* Semantic */
+  --status-airborne:  #2563eb;
+  --status-ontime:    #16a34a;
+  --status-delayed:   #d97706;
+  --status-cancelled: #dc2626;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+.dark {
+  /* Backgrounds */
+  --bg-page:    #0d1117;
+  --bg-surface: #161b22;
+  --bg-hover:   #21262d;
+  --bg-border:  #30363d;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Text */
+  --text-primary:   #e6edf3;
+  --text-secondary: #8b949e;
+  --text-muted:     #3d444d;
+
+  /* Jade stays the same */
+  --jade-100: #d4f5e4;
+  --jade-400: #5bbd8a;
+  --jade-600: #2e8c5e;
+  --jade-800: #1a5c3e;
+
+  /* Semantic stays the same */
+  --status-airborne:  #388bfd;
+  --status-ontime:    #3fb950;
+  --status-delayed:   #f0883e;
+  --status-cancelled: #f85149;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg-page);
+  color: var(--text-primary);
 }
