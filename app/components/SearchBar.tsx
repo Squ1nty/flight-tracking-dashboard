@@ -25,9 +25,6 @@ export default function SearchBar() {
               : 'bg-[var(--bg-surface)] border-[var(--bg-border)]'
           }`}
         >
-          <span aria-hidden="true" className="text-lg" style={{ color: 'var(--text-secondary)' }}>
-            🔍
-          </span>
 
           <input
             type="text"
@@ -43,7 +40,7 @@ export default function SearchBar() {
           <button
             type="submit"
             aria-label="Search for flight"
-            className="flex-shrink-0 rounded-md px-5 py-2 text-sm font-medium transition-colors duration-150"
+            className="flex-shrink-0 rounded-md px-5 py-2 text-sm font-medium transition-colors duration-150 cursor-pointer hover:bg-[var(--jade-700)]"
             style={{ background: 'var(--jade-600)', color: 'var(--jade-100)' }}
           >
             Search
