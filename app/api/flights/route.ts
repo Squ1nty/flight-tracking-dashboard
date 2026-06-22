@@ -25,7 +25,10 @@ export async function GET(req: NextRequest) {
       `http://api.aviationstack.com/v1/flights?access_key=${process.env.AVIATIONSTACK_KEY}&flight_iata=${query}&limit=5`,
     )
 
-    if (!res.ok) throw new Error('AviationStack fetch failed')
+    if (!res.ok) {
+      const errorBody = await res.text()
+      throw new Error('AviationStack fetch failed')
+    }
 
     const data = await res.json()
 
