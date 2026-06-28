@@ -6,6 +6,7 @@ import type { Flight } from '@/lib/opensky'
 import { getAirlineInfo } from '@/lib/airlines'
 import FlightStatusPill from './FlightStatusPill'
 import AirlineIcon from './AirlineIcon'
+import Link from 'next/link'
 
 type Props = {
   flights: Flight[]
@@ -35,51 +36,53 @@ export default function FlightGrid({ flights }: Props) {
           const status = flight.on_ground ? 'On ground' : 'Airborne'
 
           return (
-            <article
-              key={flight.icao24}
-              className={`rounded-lg overflow-hidden border transition-all duration-300 hover:border-[var(--jade-600-low-opa)] shadow-md hover:shadow-lg hover:translate-y-[-3px] cursor-pointer ${
-                dark
-                  ? 'bg-[var(--bg-surface)] border-[var(--bg-border)]'
-                  : 'bg-white border-[var(--bg-border)]'
-              }`}
-              aria-label={`Flight ${flight.callsign} from ${flight.origin_country}`}
-            >
-              <div
-                className="h-24 flex items-center justify-center"
-                style={{ background: `${airline?.color ?? '#b8b8b8'}18` }}
+            <Link href={`/flight/${flight.callsign}`} key={flight.icao24} className="block">
+              <article
+                key={flight.icao24}
+                className={`rounded-lg overflow-hidden border transition-all duration-300 hover:border-[var(--jade-600-low-opa)] shadow-md hover:shadow-lg hover:translate-y-[-3px] cursor-pointer active:scale-95 active:shadow-sm ${
+                  dark
+                    ? 'bg-[var(--bg-surface)] border-[var(--bg-border)]'
+                    : 'bg-white border-[var(--bg-border)]'
+                }`}
+                aria-label={`Flight ${flight.callsign} from ${flight.origin_country}`}
               >
-                <AirlineIcon callsign={flight.callsign} size={72} />
-              </div>
+                <div
+                  className="h-24 flex items-center justify-center"
+                  style={{ background: `${airline?.color ?? '#b8b8b8'}18` }}
+                >
+                  <AirlineIcon callsign={flight.callsign} size={72} />
+                </div>
 
-              <div className="p-3 border-t" style={{ borderColor: 'var(--bg-border)' }}>
-                <div className="flex items-center mb-0.5">
-                  <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
-                    {flight.callsign || 'N/A'}
+                <div className="p-3 border-t" style={{ borderColor: 'var(--bg-border)' }}>
+                  <div className="flex items-center mb-0.5">
+                    <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
+                      {flight.callsign || 'N/A'}
+                    </p>
+                    <div className="ml-auto">
+                      <FlightStatusPill status={status} />
+                    </div>
+                  </div>
+                  <p className="text-xs mb-3" style={{ color: 'var(--text-secondary)' }}>
+                    {airline?.name ?? 'Unknown Airline'} · {flight.origin_country}
                   </p>
-                  <div className="ml-auto">
-                    <FlightStatusPill status={status} />
-                  </div>
-                </div>
-                <p className="text-xs mb-3" style={{ color: 'var(--text-secondary)' }}>
-                  {airline?.name ?? 'Unknown Airline'} · {flight.origin_country}
-                </p>
 
-                <div className="space-y-1.5 text-xs">
-                  <div className="flex justify-between">
-                    <span style={{ color: 'var(--text-muted)' }}>Alt</span>
-                    <span style={{ color: 'var(--text-primary)' }}>{altM.toLocaleString()} m</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span style={{ color: 'var(--text-muted)' }}>Speed</span>
-                    <span style={{ color: 'var(--text-primary)' }}>{speedKmh.toLocaleString()} km/h</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span style={{ color: 'var(--text-muted)' }}>Heading</span>
-                    <span style={{ color: 'var(--text-primary)' }}>{heading}°</span>
+                  <div className="space-y-1.5 text-xs">
+                    <div className="flex justify-between">
+                      <span style={{ color: 'var(--text-muted)' }}>Alt</span>
+                      <span style={{ color: 'var(--text-primary)' }}>{altM.toLocaleString()} m</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span style={{ color: 'var(--text-muted)' }}>Speed</span>
+                      <span style={{ color: 'var(--text-primary)' }}>{speedKmh.toLocaleString()} km/h</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span style={{ color: 'var(--text-muted)' }}>Heading</span>
+                      <span style={{ color: 'var(--text-primary)' }}>{heading}°</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </article>
+              </article>
+            </Link>
           )
         })}
       </div>
