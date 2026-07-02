@@ -1,11 +1,13 @@
 // app/components/Navbar.tsx
 'use client'
 
+import { useRecordLastPage } from '@/lib/useLastPage'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTheme } from '../contextFiles/ThemeContext'
 
 export default function Navbar() {
+  useRecordLastPage()
   const { theme, toggleTheme } = useTheme()
   const pathname = usePathname()
   const dark = theme === 'dark'

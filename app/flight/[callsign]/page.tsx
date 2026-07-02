@@ -6,6 +6,7 @@ import FlightHeader from '../../components/FlightHeader'
 import { toIataCallsign } from '@/lib/airlines'
 import ScheduleTimes from '../../components/ScheduleTimes'
 import DataDisclaimer from '../../components/DataDisclaimer'
+import BackButton from '@/app/components/BackButton'
 
 type Props = {
   params: Promise<{ callsign: string }>
@@ -95,13 +96,7 @@ export default async function FlightDetailPage({ params }: Props) {
 
   return (
     <main className="max-w-2xl mx-auto px-6 py-10">
-      <Link
-        href="/"
-        className="inline-flex items-center gap-2 text-sm rounded-md px-4 py-2 mb-6"
-        style={{ background: 'var(--bg-surface)', color: 'var(--text-secondary)', border: '0.5px solid var(--bg-border)' }}
-      >
-        ← Back to search
-      </Link>
+      <BackButton />
 
       <FlightHeader
         callsign={decoded}
