@@ -7,7 +7,7 @@ import { getAirlineInfo } from '@/lib/airlines'
 type Props = {
   callsign: string
   originCountry: string
-  status: 'Airborne' | 'On ground' | 'N/A'
+  status: 'Airborne' | 'On ground' | 'Departing' | 'Arrived' | 'N/A'
 }
 
 export default function FlightHeader({ callsign, originCountry, status }: Props) {

@@ -1,5 +1,7 @@
 // lib/eta.ts
 
+import { AIRPORT_COORDS } from "./airports"
+
 export type FlightPhase = 
   | 'climbing'
   | 'cruising'
@@ -18,6 +20,35 @@ export type EtaResult = {
 
 function toRad(deg: number) {
   return (deg * Math.PI) / 180
+}
+
+// How close to an airport counts as "at" it (in km)
+const AIRPORT_PROXIMITY_KM = 5
+
+export function isNearAirport(
+  lat: number,
+  lon: number,
+  airportIata: string
+): boolean {
+  const airport = AIRPORT_COORDS[airportIata]
+  if (!airport) return false
+  const dist = haversineKm(lat, lon, airport.lat, airport.lon)
+  return dist < AIRPORT_PROXIMITY_KM
+}
+
+export type GroundStatus = 'departing' | 'arrived' | 'on_ground'
+
+export function getGroundStatus(
+  lat: number | null,
+  lon: number | null,
+  departureIata: string | null | undefined,
+  arrivalIata: string | null | undefined
+): GroundStatus {
+  if (!lat || !lon) return 'on_ground'
+
+  if (arrivalIata && isNearAirport(lat, lon, arrivalIata)) return 'arrived'
+  if (departureIata && isNearAirport(lat, lon, departureIata)) return 'departing'
+  return 'on_ground'
 }
 
 export function haversineKm(

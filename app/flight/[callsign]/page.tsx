@@ -7,6 +7,10 @@ import { toIataCallsign } from '@/lib/airlines'
 import ScheduleTimes from '../../components/ScheduleTimes'
 import DataDisclaimer from '../../components/DataDisclaimer'
 import BackButton from '@/app/components/BackButton'
+import LivePosition from '../../components/LivePosition'
+import ScheduleSection from '@/app/components/ScheduleSection'
+import { AIRPORT_COORDS } from '@/lib/airports'
+import { getGroundStatus } from '@/lib/eta'
 
 type Props = {
   params: Promise<{ callsign: string }>
@@ -14,7 +18,6 @@ type Props = {
 
 async function getAviationStackData(callsign: string) {
   const iataCallsign = toIataCallsign(callsign) ?? callsign
-
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/flights?q=${iataCallsign}`,
     { cache: 'no-store' }
@@ -22,14 +25,19 @@ async function getAviationStackData(callsign: string) {
   if (!res.ok) return null
   const json = await res.json()
   const results = json?.data ?? []
-
   if (results.length === 0) return null
 
-  // Prefer today's flight_date if multiple results exist
-  const today = new Date().toISOString().split('T')[0] // "2026-06-21"
+  const today = new Date().toISOString().split('T')[0]
   const todayMatch = results.find((f: any) => f.flight_date === today)
+  const result = todayMatch ?? results[0]
 
-  return todayMatch ?? results[0] // fallback to first result if no exact date match
+  // Filter out flights where departure or arrival airport isn't in our database
+  const depIata = result?.departure?.iata
+  const arrIata = result?.arrival?.iata
+  if (depIata && !AIRPORT_COORDS[depIata]) return null
+  if (arrIata && !AIRPORT_COORDS[arrIata]) return null
+
+  return result
 }
 
 async function getLivePosition(callsign: string): Promise<Flight | null> {
@@ -37,19 +45,10 @@ async function getLivePosition(callsign: string): Promise<Flight | null> {
   return flights.find(f => f.callsign.toUpperCase() === callsign) ?? null
 }
 
-function StatBox({ label, value }: { label: string; value: string | number }) {
-  return (
-    <div className="rounded-md p-3" style={{ background: 'var(--bg-hover)' }}>
-      <p className="text-xs mb-0.5" style={{ color: 'var(--text-muted)' }}>{label}</p>
-      <p className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{value}</p>
-    </div>
-  )
-}
-
 function SectionCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div
-      className={`rounded-lg border p-5 ${title === "Route" ? 'mb-4' : ''}`}
+      className={`rounded-lg border p-5 ${title === 'Route' ? 'mb-4' : ''}`}
       style={{ background: 'var(--bg-surface)', borderColor: 'var(--bg-border)' }}
     >
       <p className="text-sm font-medium mb-4" style={{ color: 'var(--text-secondary)' }}>{title}</p>
@@ -66,6 +65,25 @@ export default async function FlightDetailPage({ params }: Props) {
     getAviationStackData(decoded),
     getLivePosition(decoded),
   ])
+
+  function resolveStatus(
+    liveData: Flight | null,
+    scheduleData: any
+  ): 'Airborne' | 'On ground' | 'Departing' | 'Arrived' | 'N/A' {
+    if (!liveData) return 'N/A'
+    if (!liveData.on_ground) return 'Airborne'
+
+    const ground = getGroundStatus(
+      liveData.latitude,
+      liveData.longitude,
+      scheduleData?.departure?.iata,
+      scheduleData?.arrival?.iata
+    )
+
+    if (ground === 'arrived') return 'Arrived'
+    if (ground === 'departing') return 'Departing'
+    return 'On ground'
+  }
 
   if (!scheduleData && !liveData) {
     return (
@@ -87,12 +105,7 @@ export default async function FlightDetailPage({ params }: Props) {
     )
   }
 
-  const altM = liveData?.altitude ? Math.round(liveData.altitude) : 0
-  const speedKmh = liveData?.velocity ? Math.round(liveData.velocity * 3.6) : 0
-  const heading = liveData?.heading ? Math.round(liveData.heading) : 0
-  const status = liveData ? (liveData.on_ground ? 'On ground' : 'Airborne') : 'N/A'
-
-  const showSchedule = !liveData || liveData.on_ground
+  const status = resolveStatus(liveData, scheduleData)
 
   return (
     <main className="max-w-2xl mx-auto px-6 py-10">
@@ -126,25 +139,21 @@ export default async function FlightDetailPage({ params }: Props) {
         </div>
       </SectionCard>
 
-      {showSchedule && scheduleData && (
-        <>
-          <SectionCard title="Schedule">
-            <ScheduleTimes
-              scheduledDeparture={scheduleData?.departure?.scheduled}
-              estimatedArrival={scheduleData?.arrival?.estimated}
-            />
-          </SectionCard>
-          <DataDisclaimer />
-        </>
-      )}
+      <SectionCard title="Schedule">
+        <ScheduleSection
+          initialFlight={liveData}
+          callsign={decoded}
+          scheduledDeparture={scheduleData?.departure?.scheduled}
+          arrivalIata={scheduleData?.arrival?.iata}
+        />
+      </SectionCard>
+      <DataDisclaimer />
 
       <SectionCard title="Live position">
-        <div className="grid grid-cols-2 gap-2">
-          <StatBox label="Altitude" value={liveData ? `${altM.toLocaleString()} m` : 'N/A'} />
-          <StatBox label="Speed" value={liveData ? `${speedKmh.toLocaleString()} km/h` : 'N/A'} />
-          <StatBox label="Heading" value={liveData ? `${heading}°` : 'N/A'} />
-          <StatBox label="Status" value={status} />
-        </div>
+        <LivePosition
+          callsign={decoded}
+          initialFlight={liveData}
+        />
       </SectionCard>
     </main>
   )
