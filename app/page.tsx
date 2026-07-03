@@ -2,6 +2,7 @@
 import SearchBar from './components/SearchBar'
 import FlightGrid from './components/FlightGrid'
 import { getAusnzAirspaceFlights } from '@/lib/opensky'
+import { getAirlineInfo } from '@/lib/airlines'
 
 function getRandomFlights(flights: any[], count: number) {
   const shuffled = [...flights].sort(() => Math.random() - 0.5)
@@ -11,8 +12,12 @@ function getRandomFlights(flights: any[], count: number) {
 export default async function Home() {
   const flights = await getAusnzAirspaceFlights()
   const suggested = getRandomFlights(
-    flights.filter(f => f.callsign && f.callsign !== 'N/A'),
-    12  // fetch 12, CSS grid shows fewer on smaller screens
+    flights.filter(f => 
+      f.callsign && 
+      f.callsign !== 'N/A' && 
+      getAirlineInfo(f.callsign) !== null  // ← only known airlines
+    ),
+    12
   )
 
   return (
