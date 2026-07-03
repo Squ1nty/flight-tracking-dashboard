@@ -10,30 +10,65 @@ export type Flight = {
   velocity: number | null // m/s
   heading: number | null  // degrees 0-360
   on_ground: boolean
+  verticalRate: number | null
 }
 
+let flightCache: {
+  data: Flight[]
+  timestamp: number
+} | null = null
+
+const CACHE_DURATION = 20000 // 15 seconds
+
 export async function getAusnzAirspaceFlights(): Promise<Flight[]> {
-  // Bounding box for AUS/NZ airspace
+  // Return cached data if fresh
+  if (flightCache && Date.now() - flightCache.timestamp < CACHE_DURATION) {
+    console.log('OpenSky cache hit — returning cached data')
+    return flightCache.data
+  }
+
+  console.log('OpenSky cache miss — fetching fresh data')
+
   const res = await fetch(
     'https://opensky-network.org/api/states/all?lamin=-50&lomin=110&lamax=-10&lomax=180',
-    { next: { revalidate: 15 } }  // cache for 15 seconds
+    {
+      cache: 'no-store',
+      headers: {
+        'User-Agent': 'FlightTrack/1.0 (portfolio project)'
+      }
+    }
   )
 
-  if (!res.ok) throw new Error('Failed to fetch airspace data')
+  if (!res.ok) {
+    // If rate limited but we have stale cache, return it rather than crashing
+    if (res.status === 429 && flightCache) {
+      console.warn('OpenSky rate limited — returning stale cache')
+      return flightCache.data
+    }
+    console.error('OpenSky response status:', res.status)
+    throw new Error(`Failed to fetch airspace data: ${res.status}`)
+  }
 
   const data = await res.json()
 
-  return (data.states ?? []).map((s: any[]) => ({
+  const flights = (data.states ?? []).map((s: any[]) => ({
     icao24:         s[0],
     callsign:       s[1]?.trim() ?? 'N/A',
     origin_country: s[2],
     longitude:      s[5],
     latitude:       s[6],
     altitude:       s[7],
+    on_ground:      s[8],
     velocity:       s[9],
     heading:        s[10],
-    on_ground:      s[8],
+    verticalRate:   s[11],
   }))
+
+  // Store in cache
+  flightCache = { data: flights, timestamp: Date.now() }
+  console.log(`OpenSky fetched ${flights.length} flights, cached for 15s`)
+
+  return flights
 }
 
 export async function getAusnzRegisteredFlights(): Promise<Flight[]> {
@@ -58,6 +93,7 @@ export async function getAusnzRegisteredFlights(): Promise<Flight[]> {
     velocity:       s[9],
     heading:        s[10],
     on_ground:      s[8],
+    verticalRate:  s[11],
   })
 
   return [
