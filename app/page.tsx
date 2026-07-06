@@ -3,6 +3,7 @@ import SearchBar from './components/SearchBar'
 import FlightGrid from './components/FlightGrid'
 import { getAusnzAirspaceFlights } from '@/lib/opensky'
 import { getAirlineInfo } from '@/lib/airlines'
+import SuggestedFlights from './components/SuggestedFlights'
 
 function getRandomFlights(flights: any[], count: number) {
   const shuffled = [...flights].sort(() => Math.random() - 0.5)
@@ -23,7 +24,7 @@ export default async function Home() {
   return (
     <main className="max-w-[1400px] mx-auto px-6 py-10 w-full">
       <SearchBar />
-      <FlightGrid flights={suggested} />
+      <SuggestedFlights initialFlights={flights} />
     </main>
   )
 }
