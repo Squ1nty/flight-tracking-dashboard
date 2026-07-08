@@ -74,35 +74,25 @@ export function getFlightPhase(
 ): FlightPhase {
   if (onGround) return 'on_ground'
 
+  // Check vertical rate FIRST — positive rate always means climbing
+  if (verticalRate != null && verticalRate > 1.0) return 'climbing'
+
   if (altitudeM === null) {
     if (speedMs != null && speedMs < 50) return 'landing'
     if (distanceToDestKm != null && distanceToDestKm < 10) return 'landing'
     return 'unknown'
   }
 
-  // Landing imminent regardless of vertical rate
+  // Only check altitude thresholds if NOT climbing
   if (altitudeM <= 457) return 'landing'
 
-  // Use vertical rate to distinguish climbing vs descending
-  const CLIMB_THRESHOLD = 1.0    // > 1 m/s upward = climbing
-  const DESCENT_THRESHOLD = -1.0 // < -1 m/s downward = descending
-
-  if (verticalRate != null) {
-    if (verticalRate > CLIMB_THRESHOLD) {
-      // Climbing — just departed, no ETA meaningful yet
-      return 'climbing'
+  if (verticalRate != null && verticalRate < -1.0) {
+    if (altitudeM <= 3048 && distanceToDestKm != null && distanceToDestKm < 50) {
+      return 'on_approach'
     }
-
-    if (verticalRate < DESCENT_THRESHOLD) {
-      // Descending — check if on approach or early descent
-      if (altitudeM <= 3048 && distanceToDestKm != null && distanceToDestKm < 50) {
-        return 'on_approach'
-      }
-      return 'descending'
-    }
+    return 'descending'
   }
 
-  // Vertical rate null or near zero — use altitude + distance heuristics
   if (altitudeM <= 3048) {
     if (distanceToDestKm != null && distanceToDestKm < 50) return 'on_approach'
     return 'descending'
