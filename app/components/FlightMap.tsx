@@ -148,7 +148,8 @@ export default function FlightMap({ initialFlights }: Props) {
       const airline = getAirlineInfo(flight.callsign)
       const color = airline?.color ?? '#b8b8b8'
       const icon = createPlaneIcon(color, flight.heading ?? 0)
-      const altM = flight.altitude ? Math.round(flight.altitude) : 0
+      let altM = flight.altitude ? Math.round(flight.altitude) : 0
+      if(altM < 0) altM = 0  // Ensure altitude is not negative
       const speedKmh = flight.velocity ? Math.round(flight.velocity * 3.6) : 0
 
       const marker = L.marker([flight.latitude!, flight.longitude!], { icon })
@@ -203,22 +204,24 @@ export default function FlightMap({ initialFlights }: Props) {
 
   // Auto-refresh
   useEffect(() => {
-    console.log('Auto-refresh useEffect mounted')
-    const interval = setInterval(async () => {
-      try {
-        console.log(`OpenSky returned ${flights.length} flights`)
-        const res = await fetch('/api/opensky')
-        if (res.ok) {
-          const data = await res.json()
-          console.log('Received flights:', data.length)
-          setFlights(data)
-        }
-      } catch (err) {
-        console.error('Auto-refresh failed:', err)
+  // Run once immediately on mount to get latest data
+  const fetchFlights = async () => {
+    try {
+      const res = await fetch('/api/opensky')
+      if (res.ok) {
+        const data = await res.json()
+        setFlights(data)
       }
-    }, 15000)
-    return () => clearInterval(interval)
-  }, [])
+    } catch (err) {
+      console.error('Auto-refresh failed:', err)
+    }
+  }
+
+  fetchFlights() // ← immediate fetch on mount
+
+  const interval = setInterval(fetchFlights, 20000)
+  return () => clearInterval(interval)
+}, [])
 
   return (
     <div className="relative w-full h-full">

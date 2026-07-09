@@ -94,6 +94,7 @@ export default function AirportPanel({ airport, flights, onClose, onFlightClick 
               const airline = getAirlineInfo(flight.callsign)
               const color = airline?.color ?? '#b8b8b8'
               const iata = toIataCallsign(flight.callsign)
+              const isTaxiing = flight.velocity != null && flight.velocity > 1.5
 
               return (
                 <li key={flight.icao24}>
@@ -134,9 +135,12 @@ export default function AirportPanel({ airport, flights, onClose, onFlightClick 
                     </div>
                     <span
                       className="text-xs px-2 py-0.5 rounded-full flex-shrink-0"
-                      style={{ background: '#1a1a2e', color: '#8b949e' }}
+                      style={{
+                        background: isTaxiing ? '#1a2a1a' : '#1a1a2e',
+                        color: isTaxiing ? '#5bbd8a' : '#8b949e'
+                      }}
                     >
-                      On ground
+                      {isTaxiing ? 'Taxiing' : 'Parked'}
                     </span>
                   </Link>
                 </li>
