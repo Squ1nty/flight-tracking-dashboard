@@ -1,6 +1,6 @@
 // app/components/FlightStatusPill.tsx
 
-type Status = 'Airborne' | 'On ground' | 'Departing' | 'Arrived' | 'N/A'
+type Status = 'Airborne' | 'On ground' | 'Departing' | 'Arrived' | 'Taxiing' | 'N/A'
 
 type Props = {
   status: Status
@@ -10,6 +10,7 @@ const STATUS_STYLES: Record<Status, { bg: string; text: string }> = {
   'Airborne':  { bg: '#0d2818', text: '#3fb950' },
   'Departing': { bg: '#0a1f3d', text: '#388bfd' },  // blue — like climbing
   'Arrived':   { bg: '#1a1a2e', text: '#5bbd8a' },  // jade — positive completion
+  'Taxiing':   { bg: '#1a2a1a', text: '#5bbd8a' },
   'On ground': { bg: '#1a1a2e', text: '#8b949e' },
   'N/A':       { bg: '#1a1a2e', text: '#8b949e' },
 }

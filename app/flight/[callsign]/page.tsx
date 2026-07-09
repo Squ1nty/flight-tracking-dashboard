@@ -57,6 +57,28 @@ function SectionCard({ title, children }: { title: string; children: React.React
   )
 }
 
+function resolveStatus(
+  liveData: Flight | null,
+  scheduleData: any
+): 'Airborne' | 'On ground' | 'Departing' | 'Arrived' | 'Taxiing' | 'N/A' {
+  if (!liveData) return 'N/A'
+  if (!liveData.on_ground) return 'Airborne'  // airborne = always Airborne, no exceptions
+
+  // Only check airport proximity when confirmed on the ground
+  const ground = getGroundStatus(
+    liveData.latitude,
+    liveData.longitude,
+    scheduleData?.departure?.iata,
+    scheduleData?.arrival?.iata
+  )
+
+  if (ground === 'arrived') {
+    return liveData.velocity && liveData.velocity > 1.5 ? 'Taxiing' : 'Arrived'
+  }
+  if (ground === 'departing') return 'Departing'
+  return 'On ground'
+}
+
 export default async function FlightDetailPage({ params }: Props) {
   const { callsign } = await params
   const decoded = decodeURIComponent(callsign).toUpperCase()
@@ -65,25 +87,6 @@ export default async function FlightDetailPage({ params }: Props) {
     getAviationStackData(decoded),
     getLivePosition(decoded),
   ])
-
-  function resolveStatus(
-    liveData: Flight | null,
-    scheduleData: any
-  ): 'Airborne' | 'On ground' | 'Departing' | 'Arrived' | 'N/A' {
-    if (!liveData) return 'N/A'
-    if (!liveData.on_ground) return 'Airborne'
-
-    const ground = getGroundStatus(
-      liveData.latitude,
-      liveData.longitude,
-      scheduleData?.departure?.iata,
-      scheduleData?.arrival?.iata
-    )
-
-    if (ground === 'arrived') return 'Arrived'
-    if (ground === 'departing') return 'Departing'
-    return 'On ground'
-  }
 
   if (!scheduleData && !liveData) {
     return (

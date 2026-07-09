@@ -20,6 +20,7 @@ const PHASE_COLORS: Record<string, { bg: string; text: string }> = {
   on_approach: { bg: '#2d1a0a', text: '#f0883e' },
   descending:  { bg: '#2d1a0a', text: '#f0883e' },
   landing:     { bg: '#2d0f0e', text: '#f85149' },
+  taxiing:     { bg: '#1a2a1a', text: '#5bbd8a' },
   on_ground:   { bg: '#1a1a2e', text: '#8b949e' },
   unknown:     { bg: '#1a1a2e', text: '#8b949e' },
 }  // ← was missing this closing brace
@@ -27,10 +28,11 @@ const PHASE_COLORS: Record<string, { bg: string; text: string }> = {
 const PHASE_LABELS: Record<string, string> = {
   climbing:    'Climbing',
   cruising:    'Cruising',
-  on_approach: 'On approach',
+  on_approach: 'On Approach',
   descending:  'Descending',
   landing:     'Landing',
-  on_ground:   'On ground',
+  taxiing:      'Taxiing',
+  on_ground:   'Touched Down',
   unknown:     'Unknown',
 }
 
@@ -78,7 +80,6 @@ export default function EtaDisplay({
   )
 
   const colors = PHASE_COLORS[eta.phase] ?? PHASE_COLORS.unknown
-  console.log('ETA result:', eta)
   return (
     <div className="rounded-md px-3 py-5 grid items-center" style={{ background: 'var(--bg-hover)' }}>
       {PHASE_LABELS[eta.phase] !== 'Climbing' && (

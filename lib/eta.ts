@@ -8,6 +8,7 @@ export type FlightPhase =
   | 'descending'
   | 'on_approach'
   | 'landing'
+  | 'taxiing'
   | 'on_ground'
   | 'unknown'
 
@@ -72,7 +73,12 @@ export function getFlightPhase(
   distanceToDestKm?: number | null,
   verticalRate?: number | null
 ): FlightPhase {
-  if (onGround) return 'on_ground'
+  if (onGround) {
+    // Taxiing speed is typically 15-30 km/h (4-8 m/s)
+    // Stationary or very slow = parked, moving = taxiing
+    if (speedMs != null && speedMs > 1.5) return 'taxiing'
+    return 'on_ground'
+  }
 
   // Check vertical rate FIRST — positive rate always means climbing
   if (verticalRate != null && verticalRate > 1.0) return 'climbing'
@@ -118,8 +124,17 @@ export function calculateEta(
     return {
       phase,
       etaMinutes: null,
-      display: 'On ground',
+      display: 'Arrived',
       subtext: 'Not currently airborne'
+    }
+  }
+
+  if (phase === 'taxiing') {
+    return {
+      phase,
+      etaMinutes: null,
+      display: 'Taxiing',
+      subtext: 'Aircraft taxiing on ground'
     }
   }
 
@@ -136,7 +151,7 @@ export function calculateEta(
     return {
       phase,
       etaMinutes: 0,
-      display: 'Arrived',
+      display: 'Arriving',
       subtext: 'At or near destination'
     }
   }
