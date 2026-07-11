@@ -1,8 +1,16 @@
-// app/map/page.tsx — Server Component, just fetches data
-import { getAusnzAirspaceFlights } from '@/lib/opensky'
+// app/map/page.tsx
+import { getAusnzAirspaceFlights, type Flight } from '@/lib/opensky'
 import MapClient from '../components/MapClient'
 
 export default async function MapPage() {
-  const flights = await getAusnzAirspaceFlights()
+  let flights: Flight[] = []
+
+  try {
+    flights = await getAusnzAirspaceFlights()
+  } catch (err) {
+    console.warn('Initial OpenSky fetch failed, starting with empty map:', err)
+    // Map will still render, auto-refresh will populate it once rate limit clears
+  }
+
   return <MapClient initialFlights={flights} />
 }
