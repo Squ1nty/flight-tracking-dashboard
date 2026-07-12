@@ -1,6 +1,5 @@
 // app/page.tsx
 import SearchBar from './components/SearchBar'
-import FlightGrid from './components/FlightGrid'
 import { getAusnzAirspaceFlights } from '@/lib/opensky'
 import { getAirlineInfo } from '@/lib/airlines'
 import SuggestedFlights from './components/SuggestedFlights'
@@ -23,7 +22,7 @@ export default async function Home() {
 
   return (
     <main className="max-w-[1400px] mx-auto px-6 py-10 w-full">
-      <SearchBar />
+      <SearchBar initialFlights={flights} />
       <SuggestedFlights initialFlights={flights} />
     </main>
   )
