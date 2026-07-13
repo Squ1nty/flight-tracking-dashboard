@@ -48,7 +48,7 @@ export default function FlightGrid({ flights }: Props) {
               >
                 <div
                   className="h-24 flex items-center justify-center"
-                  style={{ background: `${airline?.color ?? '#b8b8b8'}18` }}
+                  style={{ background: `${airline?.color ?? '#b8b8b8'}0d` }}
                 >
                   <AirlineIcon callsign={flight.callsign} size={72} />
                 </div>
