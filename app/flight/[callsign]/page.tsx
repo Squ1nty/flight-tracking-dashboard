@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { getAusnzAirspaceFlights, type Flight } from '@/lib/opensky'
 import FlightHeader from '../../components/FlightHeader'
-import { toIataCallsign } from '@/lib/airlines'
+import { getAirlineInfo, toIataCallsign } from '@/lib/airlines'
 import ScheduleTimes from '../../components/ScheduleTimes'
 import DataDisclaimer from '../../components/DataDisclaimer'
 import BackButton from '@/app/components/BackButton'
@@ -119,6 +119,19 @@ export default async function FlightDetailPage({ params }: Props) {
         originCountry={liveData?.origin_country ?? scheduleData?.airline?.country_name ?? 'N/A'}
         status={status}
       />
+      {(() => {
+        const airline = getAirlineInfo(decoded)
+        return airline?.isFifo ? (
+          <div className="mb-4">
+            <span
+              className="text-xs px-3 py-1 rounded-full font-medium"
+              style={{ background: '#3d1a0a', color: '#C1440E' }}
+            >
+              ⛏ FIFO Flight · WA Mining Operations
+            </span>
+          </div>
+        ) : null
+      })()}
 
       <SectionCard title="Route">
         <div className="flex items-center gap-4">

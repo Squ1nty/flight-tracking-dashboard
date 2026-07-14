@@ -40,7 +40,6 @@ export const AIRPORT_COORDS: Record<string, { lat: number; lon: number; name: st
   ROK: { lat: -23.3819, lon: 150.4753, name: 'Rockhampton' },
   MKY: { lat: -21.1717, lon: 149.1797, name: 'Mackay' },
   HTI: { lat: -20.3583, lon: 148.9517, name: 'Hamilton Island' },
-  PPP: { lat: -20.4950, lon: 148.5522, name: 'Proserpine' },
   ZBR: { lat: -24.8941, lon: 152.3236, name: 'Bundaberg' },
   ISA: { lat: -20.6639, lon: 139.4886, name: 'Mount Isa' },
   LRE: { lat: -23.4344, lon: 144.2803, name: 'Longreach' },
@@ -135,7 +134,14 @@ export const AIRPORT_COORDS: Record<string, { lat: number; lon: number; name: st
   DEL: { lat: 28.5665,  lon: 77.1031,  name: 'New Delhi Indira Gandhi' },
   BOM: { lat: 19.0896,  lon: 72.8656,  name: 'Mumbai Chhatrapati Shivaji' },
   HNL: { lat: 21.3245,  lon: -157.9251, name: 'Honolulu International' },
-}
+  // WA Mining airports
+  ZNE: { lat: -23.4178, lon: 119.8031, name: 'Newman' },
+  PPP: { lat: -20.4950, lon: 148.5522, name: 'Paraburdoo' },
+  WLP: { lat: -21.4781, lon: 120.1161, name: 'Marble Bar' },
+  OCM: { lat: -24.6897, lon: 117.8428, name: 'Pannawonica' },
+  MER: { lat: -26.2417, lon: 119.5878, name: 'Meekatharra' },
+  WKB: { lat: -24.3311, lon: 120.1181, name: 'Warburton' },
+  }
 
 export const AUS_NZ_AIRPORTS: Airport[] = Object.entries(AIRPORT_COORDS)
   .filter(([, data]) =>

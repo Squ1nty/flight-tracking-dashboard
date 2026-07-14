@@ -4,7 +4,8 @@ export type AirlineInfo = {
   name: string
   domain: string
   color: string
-  iata: string  // ← add this
+  iata: string
+  isFifo?: boolean
 }
 
 export const AIRLINE_MAP: Record<string, AirlineInfo> = {
@@ -49,6 +50,12 @@ export const AIRLINE_MAP: Record<string, AirlineInfo> = {
   AXB: { name: 'AirAsia X',        domain: 'airasiax.com',        color: '#ff0000', iata: 'D7' },
   AWQ: { name: 'Batik Air',        domain: 'batikair.com',        color: '#8b0000', iata: 'ID' },
   QLK: { name: 'QantasLink',       domain: 'qantas.com',          color: '#e00000', iata: 'QF' },
+  // Known FIFO operators
+  JSF: { name: 'Cobham Aviation',   domain: 'cobhamaviation.com.au', color: '#FF6B00', iata: 'CF', isFifo: true },
+  UTY: { name: 'Alliance Airlines', domain: 'allianceairlines.com.au', color: '#E31837', iata: 'QQ', isFifo: true },
+  SKP: { name: 'Skippers Aviation', domain: 'skippers.com.au',         color: '#003087', iata: 'HN', isFifo: true },
+  WP:  { name: 'Airwork',            domain: 'airwork.com.au',          color: '#C1440E', iata: 'AW', isFifo: true },
+  NWK: { name: 'Network Aviation',   domain: 'networkaviation.com.au',     color: '#C1440E', iata: 'NB', isFifo: true },
 }
 
 export function getAirlineInfo(callsign: string): AirlineInfo | null {

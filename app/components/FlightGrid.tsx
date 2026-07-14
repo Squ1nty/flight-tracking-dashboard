@@ -59,6 +59,14 @@ export default function FlightGrid({ flights }: Props) {
                       {flight.callsign || 'N/A'}
                     </p>
                     <div className="ml-auto">
+                      {airline?.isFifo && (
+                        <span
+                          className="text-xs px-1.5 py-0.5 rounded font-medium"
+                          style={{ background: '#3d1a0a', color: '#C1440E' }}
+                        >
+                          FIFO
+                        </span>
+                      )}
                       <FlightStatusPill status={status} />
                     </div>
                   </div>
