@@ -58,7 +58,7 @@ export default function FlightGrid({ flights }: Props) {
                     <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
                       {flight.callsign || 'N/A'}
                     </p>
-                    <div className="ml-auto">
+                    <div className="ml-auto flex gap-2 items-center">
                       {airline?.isFifo && (
                         <span
                           className="text-xs px-1.5 py-0.5 rounded font-medium"
