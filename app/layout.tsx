@@ -4,6 +4,7 @@ import { Nunito_Sans } from 'next/font/google'
 import './globals.css'
 import Navbar from './components/Navbar'
 import { ThemeProvider } from './contextFiles/ThemeContext'
+import SessionProvider from './components/SessionProvider'
 
 const nunitoSans = Nunito_Sans({
   subsets: ['latin'],
@@ -20,10 +21,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${nunitoSans.variable} font-sans antialiased`}>
-        <ThemeProvider>
-          <Navbar />
-          <main>{children}</main>
-        </ThemeProvider>
+        <SessionProvider>
+          <ThemeProvider>
+            <Navbar />
+            <main>{children}</main>
+          </ThemeProvider>
+        </SessionProvider>
       </body>
     </html>
   )
