@@ -12,6 +12,9 @@ export default function Navbar() {
   const pathname = usePathname()
   const dark = theme === 'dark'
 
+  // Placeholder — will be replaced with useSession() later
+  const isLoggedIn = true
+
   const tabs = [
     { label: 'Search', href: '/' },
     { label: 'Map', href: '/map' },
@@ -57,18 +60,56 @@ export default function Navbar() {
           })}
         </div>
       </div>
+      <div className="flex items-center gap-2">
 
-      {/* Theme toggle */}
-      <button
-        onClick={toggleTheme}
-        className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 cursor-pointer ${
-          dark
-            ? 'text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]'
-            : 'text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]'
-        }`}
-      >
-        {dark ? 'Dark Mode' : 'Light Mode'}
-      </button>
+        {/* Theme toggle */}
+        <button
+          onClick={toggleTheme}
+          className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 cursor-pointer ${
+            dark
+              ? 'text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]'
+              : 'text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]'
+          }`}
+        >
+          {dark ? 'Dark Mode' : 'Light Mode'}
+        </button>
+
+        {/* Auth buttons */}
+        {isLoggedIn ? (
+          // Logged in — show profile button
+          <Link
+            href="/account"
+            className="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:bg-[var(--bg-hover)]"
+            style={{ color: 'var(--text-secondary)' }}
+          > 
+            <div
+              className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold"
+              style={{ background: 'var(--jade-800)', color: 'var(--jade-100)' }}
+            >
+              V
+            </div>
+            Vincent
+          </Link>
+        ) : (
+          // Logged out — show login + register
+          <div className="flex items-center gap-2">
+            <Link
+              href="/login"
+              className="px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:bg-[var(--bg-hover)]"
+              style={{ color: 'var(--text-secondary)' }}
+            >
+              Log in
+            </Link>
+            <Link
+              href="/register"
+              className="px-4 py-2 rounded-md text-sm font-medium transition-all duration-200"
+              style={{ background: 'var(--jade-600)', color: 'var(--jade-100)' }}
+            >
+              Sign up
+            </Link>
+          </div>
+        )}
+      </div>
     </nav>
   )
 }
