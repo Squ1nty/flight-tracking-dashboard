@@ -12,5 +12,9 @@ export default async function MapPage() {
     // Map will still render, auto-refresh will populate it once rate limit clears
   }
 
-  return <MapClient initialFlights={flights} />
+    return (
+    <div className="h-[calc(100vh-57px)]">  {/* ← matches navbar height exactly */}
+      <MapClient initialFlights={flights} />
+    </div>
+  )
 }

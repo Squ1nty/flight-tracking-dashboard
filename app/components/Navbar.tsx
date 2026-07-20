@@ -13,7 +13,7 @@ export default function Navbar() {
   const dark = theme === 'dark'
 
   // Placeholder — will be replaced with useSession() later
-  const isLoggedIn = true
+  const isLoggedIn = false
 
   const tabs = [
     { label: 'Search', href: '/' },
@@ -22,7 +22,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`w-full px-8 py-4 flex items-center justify-between border-b ${
+      className={`sticky top-0 left-0 right-0 z-50 w-full px-8 py-4 flex items-center justify-between border-b ${
         dark
           ? 'bg-[var(--bg-surface)] border-[var(--bg-border)]'
           : 'bg-[var(--bg-surface)] border-[var(--bg-border)]'

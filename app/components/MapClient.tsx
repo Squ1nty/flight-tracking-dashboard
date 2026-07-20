@@ -24,7 +24,7 @@ type Props = {
 
 export default function MapClient({ initialFlights }: Props) {
   return (
-    <div className="w-full h-[calc(100vh-56px)]">
+    <div className="w-full h-full">
       <FlightMap initialFlights={initialFlights} />
     </div>
   )
