@@ -135,6 +135,20 @@ export default function FlightMap({ initialFlights }: Props) {
   useEffect(() => {
     console.log('Markers useEffect ran, mapRef:', !!mapRef.current, 'flights:', flights.length)
     if (!mapRef.current) return
+
+    try {
+      markersRef.current.forEach(m => {
+        try {
+          mapRef.current!.removeLayer(m)
+        } catch (e) {
+          // Marker already removed, ignore
+        }
+      })
+      markersRef.current = []
+    } catch (e) {
+      console.warn('Error clearing markers:', e)
+      return
+    }
     console.log('Clearing', markersRef.current.length, 'old markers')
     markersRef.current.forEach(m => mapRef.current!.removeLayer(m))
     markersRef.current = []
