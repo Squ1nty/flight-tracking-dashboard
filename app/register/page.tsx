@@ -12,8 +12,8 @@ export default function RegisterPage() {
         style={{ background: 'var(--bg-page)' }}
       >
         {/* Logo */}
-        <Link href="/" className="mb-10 inline-block">
-          <span className="text-lg font-extrabold tracking-tight">
+        <Link href="/" className="mb-5 inline-block">
+          <span className="text-4xl font-extrabold tracking-tight">
             <span style={{ color: 'var(--text-primary)' }}>Where's my </span>
             <span style={{ color: 'var(--jade-600)' }}>Flight?</span>
           </span>
