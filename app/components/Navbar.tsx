@@ -5,6 +5,7 @@ import { useRecordLastPage } from '@/lib/useLastPage'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTheme } from '../contextFiles/ThemeContext'
+import { useSession, signOut } from 'next-auth/react'
 
 export default function Navbar() {
   useRecordLastPage()
@@ -13,7 +14,8 @@ export default function Navbar() {
   const dark = theme === 'dark'
 
   // Placeholder — will be replaced with useSession() later
-  const isLoggedIn = false
+  const { data: session } = useSession()
+  const isLoggedIn = !!session
 
   const tabs = [
     { label: 'Search', href: '/' },
@@ -76,22 +78,29 @@ export default function Navbar() {
 
         {/* Auth buttons */}
         {isLoggedIn ? (
-          // Logged in — show profile button
-          <Link
-            href="/account"
-            className="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:bg-[var(--bg-hover)]"
-            style={{ color: 'var(--text-secondary)' }}
-          > 
-            <div
-              className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold"
-              style={{ background: 'var(--jade-800)', color: 'var(--jade-100)' }}
+          <div className="flex items-center gap-2">
+            <Link
+              href="/account"
+              className="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:bg-[var(--bg-hover)]"
+              style={{ color: 'var(--text-secondary)' }}
             >
-              V
-            </div>
-            Vincent
-          </Link>
+              <div
+                className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0"
+                style={{ background: 'var(--jade-800)', color: 'var(--jade-100)' }}
+              >
+                {session.user?.name?.[0].toUpperCase() ?? 'U'}
+              </div>
+              {session.user?.name ?? 'Account'}
+            </Link>
+            <button
+              onClick={() => signOut({ callbackUrl: '/' })}
+              className="px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:bg-[var(--bg-hover)]"
+              style={{ color: 'var(--text-secondary)' }}
+            >
+              Sign out
+            </button>
+          </div>
         ) : (
-          // Logged out — show login + register
           <div className="flex items-center gap-2">
             <Link
               href="/login"
