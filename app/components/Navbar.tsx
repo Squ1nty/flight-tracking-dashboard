@@ -94,7 +94,7 @@ export default function Navbar() {
             </Link>
             <button
               onClick={() => signOut({ callbackUrl: '/' })}
-              className="px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:bg-[var(--bg-hover)]"
+              className="px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:bg-[var(--bg-hover)] cursor-pointer"
               style={{ color: 'var(--text-secondary)' }}
             >
               Sign out
