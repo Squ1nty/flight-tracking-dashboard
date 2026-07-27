@@ -11,6 +11,11 @@ import LivePosition from '../../components/LivePosition'
 import ScheduleSection from '@/app/components/ScheduleSection'
 import { AIRPORT_COORDS } from '@/lib/airports'
 import { getGroundStatus } from '@/lib/eta'
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import { connectDB } from "@/lib/db"
+import SavedFlight from "@/models/SavedFlight"
+import SaveFlightButton from "@/app/components/SaveFlightButton"
 
 type Props = {
   params: Promise<{ callsign: string }>
@@ -31,7 +36,6 @@ async function getAviationStackData(callsign: string) {
   const todayMatch = results.find((f: any) => f.flight_date === today)
   const result = todayMatch ?? results[0]
 
-  // Filter out flights where departure or arrival airport isn't in our database
   const depIata = result?.departure?.iata
   const arrIata = result?.arrival?.iata
   if (depIata && !AIRPORT_COORDS[depIata]) return null
@@ -62,9 +66,8 @@ function resolveStatus(
   scheduleData: any
 ): 'Airborne' | 'On ground' | 'Departing' | 'Arrived' | 'Taxiing' | 'N/A' {
   if (!liveData) return 'N/A'
-  if (!liveData.on_ground) return 'Airborne'  // airborne = always Airborne, no exceptions
+  if (!liveData.on_ground) return 'Airborne'
 
-  // Only check airport proximity when confirmed on the ground
   const ground = getGroundStatus(
     liveData.latitude,
     liveData.longitude,
@@ -109,29 +112,52 @@ export default async function FlightDetailPage({ params }: Props) {
   }
 
   const status = resolveStatus(liveData, scheduleData)
+  const airline = getAirlineInfo(decoded)
+  const originCountry = liveData?.origin_country ?? scheduleData?.airline?.country_name ?? 'N/A'
+
+  // Auth + saved-state check — session drives both whether the button
+  // prompts a login redirect and whether it renders as already-saved
+  const session = await getServerSession(authOptions)
+  let initiallySaved = false
+
+  if (session?.user?.id) {
+    await connectDB()
+    const existing = await SavedFlight.findOne({
+      userId: session.user.id,
+      callsign: decoded,
+    })
+    initiallySaved = !!existing
+  }
 
   return (
     <main className="max-w-2xl mx-auto px-6 py-10">
       <BackButton />
 
-      <FlightHeader
-        callsign={decoded}
-        originCountry={liveData?.origin_country ?? scheduleData?.airline?.country_name ?? 'N/A'}
-        status={status}
-      />
-      {(() => {
-        const airline = getAirlineInfo(decoded)
-        return airline?.isFifo ? (
-          <div className="mb-4">
-            <span
-              className="text-xs px-3 py-1 rounded-full font-medium"
-              style={{ background: '#3d1a0a', color: '#C1440E' }}
-            >
-              ⛏ FIFO Flight · WA Mining Operations
-            </span>
-          </div>
-        ) : null
-      })()}
+      <div className="flex items-start justify-between gap-4">
+        <FlightHeader
+          callsign={decoded}
+          originCountry={originCountry}
+          status={status}
+        />
+        <SaveFlightButton
+          callsign={decoded}
+          airlineName={airline?.name ?? null}
+          originCountry={originCountry === 'N/A' ? null : originCountry}
+          isAuthenticated={!!session?.user?.id}
+          initiallySaved={initiallySaved}
+        />
+      </div>
+
+      {airline?.isFifo ? (
+        <div className="mb-4">
+          <span
+            className="text-xs px-3 py-1 rounded-full font-medium"
+            style={{ background: '#3d1a0a', color: '#C1440E' }}
+          >
+            ⛏ FIFO Flight · WA Mining Operations
+          </span>
+        </div>
+      ) : null}
 
       <SectionCard title="Route">
         <div className="flex items-center gap-4">
