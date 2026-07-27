@@ -20,11 +20,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${nunitoSans.variable} font-sans antialiased`}>
+      <body className={`${nunitoSans.variable} font-sans antialiased flex h-screen flex-col overflow-hidden`}>
         <SessionProvider>
           <ThemeProvider>
             <Navbar />
-            <main>{children}</main>
+            <main className="flex-1 overflow-y-auto min-h-0">{children}</main>
           </ThemeProvider>
         </SessionProvider>
       </body>

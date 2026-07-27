@@ -13,7 +13,7 @@ export default async function MapPage() {
   }
 
     return (
-    <div className="h-[calc(100vh-57px)]">  {/* ← matches navbar height exactly */}
+    <div className="h-full">  {/* ← matches navbar height exactly */}
       <MapClient initialFlights={flights} />
     </div>
   )

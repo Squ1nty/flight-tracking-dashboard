@@ -39,7 +39,7 @@ export default function AccountPage() {
   }, [status, router])
 
   return (
-    <div className="grid grid-rows-[100px_1fr] h-svh py-2">
+    <div className="grid grid-rows-[auto_1fr] h-full py-2">
       <div className="flex flex-col gap-2 py-4 px-8">
         <h1 className="text-4xl font-bold">Account Dashboard</h1>
         <p className="text-lg text-gray-600">
@@ -48,7 +48,7 @@ export default function AccountPage() {
           access exclusive features.
         </p>
       </div>
-      <div className="flex items-center justify-center p-8 h-fit">
+      <div className="flex items-center justify-center p-8 h-full">
         {loading ? (
           <p className="text-sm opacity-60">Loading your saved flights...</p>
         ) : (
