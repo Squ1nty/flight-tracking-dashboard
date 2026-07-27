@@ -20,7 +20,7 @@ export async function GET() {
 }
 
 // POST /api/saved-flights — save a flight for the signed-in user
-// body: { callsign, airlineName?, originCountry?, nickname? }
+// body: { callsign, airlineName?, originCountry?, departureIata?, arrivalIata?, nickname? }
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
-  const { callsign, airlineName, originCountry, nickname } = body ?? {};
+  const { callsign, airlineName, originCountry, departureIata, arrivalIata, nickname } = body ?? {};
 
   if (!callsign) {
     return NextResponse.json({ error: "callsign is required" }, { status: 400 });
@@ -49,6 +49,8 @@ export async function POST(req: NextRequest) {
     callsign,
     airlineName,
     originCountry,
+    departureIata,
+    arrivalIata,
     nickname,
     savedAt: new Date(),
   });

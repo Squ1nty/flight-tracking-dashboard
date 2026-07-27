@@ -7,6 +7,8 @@ type Props = {
   callsign: string;
   airlineName: string | null;
   originCountry: string | null;
+  departureIata: string | null;
+  arrivalIata: string | null;
   isAuthenticated: boolean;
   initiallySaved: boolean;
 };
@@ -15,6 +17,8 @@ export default function SaveFlightButton({
   callsign,
   airlineName,
   originCountry,
+  departureIata,
+  arrivalIata,
   isAuthenticated,
   initiallySaved,
 }: Props) {
@@ -40,7 +44,13 @@ export default function SaveFlightButton({
         const res = await fetch("/api/saved-flights", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ callsign, airlineName, originCountry }),
+          body: JSON.stringify({
+            callsign,
+            airlineName,
+            originCountry,
+            departureIata,
+            arrivalIata,
+          }),
         });
         if (res.ok || res.status === 409) setSaved(true);
       }

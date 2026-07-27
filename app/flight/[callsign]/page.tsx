@@ -143,6 +143,8 @@ export default async function FlightDetailPage({ params }: Props) {
           callsign={decoded}
           airlineName={airline?.name ?? null}
           originCountry={originCountry === 'N/A' ? null : originCountry}
+          departureIata={scheduleData?.departure?.iata ?? null}
+          arrivalIata={scheduleData?.arrival?.iata ?? null}
           isAuthenticated={!!session?.user?.id}
           initiallySaved={initiallySaved}
         />

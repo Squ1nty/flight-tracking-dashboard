@@ -7,6 +7,8 @@ export interface ISavedFlight extends Document {
   callsign: string
   airlineName: string
   originCountry: string
+  departureIata?: string
+  arrivalIata?: string
   savedAt: Date
   nickname?: string
 }
@@ -30,6 +32,14 @@ const SavedFlightSchema = new Schema<ISavedFlight>({
     type: String,
     default: 'Unknown',
   },
+  departureIata: {
+    type: String,
+    trim: true,
+  },
+  arrivalIata: {
+    type: String,
+    trim: true,
+  },
   savedAt: {
     type: Date,
     default: Date.now,
@@ -40,7 +50,6 @@ const SavedFlightSchema = new Schema<ISavedFlight>({
   },
 })
 
-// Prevent duplicate saved flights per user
 SavedFlightSchema.index({ userId: 1, callsign: 1 }, { unique: true })
 
 export default mongoose.models.SavedFlight ||
