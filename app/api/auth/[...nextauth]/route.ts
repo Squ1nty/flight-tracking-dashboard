@@ -1,12 +1,10 @@
-// app/api/auth/[...nextauth]/route.ts
-
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from 'bcryptjs'
 import { connectDB } from '@/lib/db'
 import User from '@/models/User'
 
-const handler = NextAuth({
+export const authOptions = {
   providers: [
     CredentialsProvider({
       name: 'credentials',
@@ -14,7 +12,7 @@ const handler = NextAuth({
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials) {
+      async authorize(credentials: any) {
         if (!credentials?.email || !credentials?.password) return null
 
         await connectDB()
@@ -34,17 +32,17 @@ const handler = NextAuth({
     })
   ],
   session: {
-    strategy: 'jwt',
+    strategy: 'jwt' as const,
   },
   callbacks: {
-    async jwt({ token, user }) {
-      if (user){
+    async jwt({ token, user }: any) {
+      if (user) {
         token.id = user.id
-        token.name = user.name 
+        token.name = user.name
       }
       return token
     },
-    async session({ session, token }) {
+    async session({ session, token }: any) {
       if (session.user) {
         session.user.id = token.id as string
         session.user.name = token.name as string
@@ -55,6 +53,8 @@ const handler = NextAuth({
   pages: {
     signIn: '/login',
   },
-})
+}
+
+const handler = NextAuth(authOptions)
 
 export { handler as GET, handler as POST }
