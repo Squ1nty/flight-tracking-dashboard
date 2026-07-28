@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="360" height="40" viewBox="0 0 360 40">
   <text x="0" y="28" font-family="Arial, sans-serif" font-size="28" font-weight="800">
-    <tspan fill="#1a1a1a">Where's my </tspan>
+    <tspan fill="#e6edf3">Where's my </tspan>
     <tspan fill="#2e8c5e">Flight?</tspan>
   </text>
 </svg>
