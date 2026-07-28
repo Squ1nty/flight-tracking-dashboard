@@ -1,2 +1,2 @@
-![Where's my Flight?](/title.svg)
+![Where's my Flight?](./public/title.svg)
 A live flight-tracking web app for Australian and New Zealand airspace. It's built with Next.js 16, TypeScript, and Tailwind CSS v4, using Leaflet for the interactive map. Live aircraft positions come from OpenSky Network, while AviationStack fills in schedule and route data. Each flight gets a detail page with a phase-aware ETA (climbing, cruising, descending, landing) and ground-status detection for parked, taxiing, departing, and arrived aircraft. Signed-in users can save flights to a personal dashboard with live status and custom nicknames, backed by MongoDB and NextAuth. The app also supports dark/light theming and remembers your last-viewed page and map state.
