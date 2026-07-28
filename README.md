@@ -78,9 +78,9 @@ app/
     ├── account/                  # Saved flights dashboard
     ├── login/ register/          # Auth pages
     ├── api/                      # Route handlers (auth, flights, opensky, saved-flights)
-    └── components/                # UI components
-lib/                          # Data fetching, caching, ETA/status logic, hooks
-models/                       # Mongoose schemas (User, SavedFlight)
+    └── components/               # UI components
+lib/                              # Data fetching/caching, ETA/status logic, hooks
+models/                           # Mongoose schemas (User, SavedFlight)
 ```
 
 ## Known Limitations
