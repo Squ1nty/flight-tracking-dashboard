@@ -2,12 +2,14 @@
 'use client'
 
 import { useRecordLastPage } from '@/lib/useLastPage'
+import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTheme } from '../contextFiles/ThemeContext'
 import { useSession, signOut } from 'next-auth/react'
 import ThemeToggle from '@/app/components/ThemeToggle'
 import MapTab from '@/app/components/MapTab'
+import MobileNavDropdown from './MobileNavDropdown'
 
 export default function Navbar() {
   useRecordLastPage()
@@ -18,6 +20,8 @@ export default function Navbar() {
   const { data: session } = useSession()
   const isLoggedIn = !!session
 
+  const [mobileNavOpen, setMobileNavOpen] = useState(false)
+
   return (
     <nav
       className={`sticky top-0 left-0 right-0 z-50 w-full px-8 py-4 flex items-center justify-between border-b ${
@@ -27,16 +31,17 @@ export default function Navbar() {
       }`}
     >
       {/* Logo and Map Button*/}
-      <div className="flex items-center md:gap-8">
+      <div className="grid grid-cols-[1fr_auto] w-full md:w-fit items-center md:flex md:gap-8">
         <Link
-          className="order-2 md:order-1 col-start-2 text-lg font-extrabold tracking-tight"
+          className="justify-self-center md:justify-self-start text-2xl md:text-lg font-extrabold tracking-tight"
           style={{ color: 'var(--text-primary)' }}
           href="/"
         >
           Where's my<span style={{ color: 'var(--jade-600)' }}> Flight?</span>
         </Link>
-
-        <MapTab pathname={pathname} />
+        
+        <MapTab pathname={pathname} /> {/* Hidden is located in component className */}
+        <MobileNavDropdown open={mobileNavOpen} onClick={() => setMobileNavOpen(prev => !prev)} />
 
       </div>
 
