@@ -6,6 +6,8 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTheme } from '../contextFiles/ThemeContext'
 import { useSession, signOut } from 'next-auth/react'
+import ThemeToggle from '@/app/components/ThemeToggle'
+import MapTab from '@/app/components/MapTab'
 
 export default function Navbar() {
   useRecordLastPage()
@@ -15,7 +17,6 @@ export default function Navbar() {
 
   const { data: session } = useSession()
   const isLoggedIn = !!session
-  const mapActive = pathname === '/map'
 
   return (
     <nav
@@ -25,8 +26,8 @@ export default function Navbar() {
           : 'bg-[var(--bg-surface)] border-[var(--bg-border)]'
       }`}
     >
-      {/* Logo, Search and Map Buttons*/}
-      <div className="grid grid-cols-3 md:flex items-center md:gap-8">
+      {/* Logo and Map Button*/}
+      <div className="flex items-center md:gap-8">
         <Link
           className="order-2 md:order-1 col-start-2 text-lg font-extrabold tracking-tight"
           style={{ color: 'var(--text-primary)' }}
@@ -35,37 +36,15 @@ export default function Navbar() {
           Where's my<span style={{ color: 'var(--jade-600)' }}> Flight?</span>
         </Link>
 
-        {/* Tabs */}
-        <div className="order-1 md:order-2 col-start-1flex items-center gap-1">
-            return (
-              <Link
-                href="/map"
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
-                  mapActive
-                    ? 'bg-[var(--jade-800)] text-[var(--jade-100)]'
-                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
-                }`}
-              >
-                Map
-              </Link>
-            )
-        </div>
+        <MapTab pathname={pathname} />
+
       </div>
 
       {/* Theme Toggle, Login/Acc and SignUp buttons */}
       <div className="hidden md:block flex items-center gap-2">
 
         {/* Theme toggle */}
-        <button
-          onClick={toggleTheme}
-          className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 cursor-pointer ${
-            dark
-              ? 'text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]'
-              : 'text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]'
-          }`}
-        >
-          {dark ? 'Dark Mode' : 'Light Mode'}
-        </button>
+        <ThemeToggle onClickHandler={toggleTheme} theme={theme} />
 
         {/* Auth buttons */}
         {isLoggedIn ? (
