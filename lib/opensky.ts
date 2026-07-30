@@ -40,10 +40,13 @@ export async function getAusnzAirspaceFlights(): Promise<Flight[]> {
   )
 
   if (!res.ok) {
-    // If rate limited but we have stale cache, return it rather than crashing
-    if (res.status === 429 && flightCache) {
-      console.warn('OpenSky rate limited — returning stale cache')
-      return flightCache.data
+    if (res.status === 429) {
+      if (flightCache) {
+        console.warn('OpenSky rate limited — returning stale cache')
+        return flightCache.data
+      }
+      console.warn('OpenSky rate limited, no cache available — returning empty')
+      return []
     }
     console.error('OpenSky response status:', res.status)
     throw new Error(`Failed to fetch airspace data: ${res.status}`)
