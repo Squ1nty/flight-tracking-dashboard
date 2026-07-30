@@ -28,7 +28,6 @@ export default function SaveFlightButton({
 
   async function handleClick() {
     if (!isAuthenticated) {
-      router.push(`/login?callbackUrl=/flight/${callsign}`);
       return;
     }
 
@@ -59,14 +58,20 @@ export default function SaveFlightButton({
     }
   }
 
-  return (
+  return isAuthenticated ? ( 
     <button
       onClick={handleClick}
       disabled={loading}
       aria-pressed={saved}
-      className="flex items-center gap-1 rounded-lg border border-white/10 px-3 py-1.5 text-sm opacity-80 hover:opacity-100 disabled:opacity-40"
+      className="flex items-center gap-1 rounded-lg border border-white/10 px-3 py-1.5 text-sm opacity-80 hover:opacity-100 disabled:opacity-40 cursor-pointer"
     >
       {saved ? "★ Saved" : "☆ Save flight"}
     </button>
-  );
+    ) : (
+      <p
+      className=" pb-10 text-sm text-[var(--text-muted)] self-end"
+      >
+        Login to save a flight!
+      </p>
+    )
 }
