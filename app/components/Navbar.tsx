@@ -13,14 +13,9 @@ export default function Navbar() {
   const pathname = usePathname()
   const dark = theme === 'dark'
 
-  // Placeholder — will be replaced with useSession() later
   const { data: session } = useSession()
   const isLoggedIn = !!session
-
-  const tabs = [
-    { label: 'Search', href: '/' },
-    { label: 'Map', href: '/map' },
-  ]
+  const mapActive = pathname === '/map'
 
   return (
     <nav
@@ -30,10 +25,10 @@ export default function Navbar() {
           : 'bg-[var(--bg-surface)] border-[var(--bg-border)]'
       }`}
     >
-      {/* Logo */}
-      <div className="flex items-center gap-8">
+      {/* Logo, Search and Map Buttons*/}
+      <div className="grid grid-cols-3 md:flex items-center md:gap-8">
         <Link
-          className="text-lg font-extrabold tracking-tight"
+          className="order-2 md:order-1 col-start-2 text-lg font-extrabold tracking-tight"
           style={{ color: 'var(--text-primary)' }}
           href="/"
         >
@@ -41,28 +36,24 @@ export default function Navbar() {
         </Link>
 
         {/* Tabs */}
-        <div className="flex items-center gap-1">
-          {tabs.map(tab => {
-            const active = pathname === tab.href
+        <div className="order-1 md:order-2 col-start-1flex items-center gap-1">
             return (
               <Link
-                key={tab.href}
-                href={tab.href}
+                href="/map"
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
-                  active
+                  mapActive
                     ? 'bg-[var(--jade-800)] text-[var(--jade-100)]'
-                    : dark
-                    ? 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
                     : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
                 }`}
               >
-                {tab.label}
+                Map
               </Link>
             )
-          })}
         </div>
       </div>
-      <div className="flex items-center gap-2">
+
+      {/* Theme Toggle, Login/Acc and SignUp buttons */}
+      <div className="hidden md:block flex items-center gap-2">
 
         {/* Theme toggle */}
         <button
