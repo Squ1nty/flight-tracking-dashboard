@@ -46,7 +46,7 @@ export default function Navbar() {
       </div>
 
       {/* Theme Toggle, Login/Acc and SignUp buttons */}
-      <div className="hidden md:block flex items-center gap-2">
+      <div className="hidden md:flex items-center gap-2">
 
         {/* Theme toggle */}
         <ThemeToggle onClickHandler={toggleTheme} theme={theme} />
