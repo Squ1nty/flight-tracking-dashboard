@@ -31,18 +31,25 @@ export default function Navbar() {
       }`}
     >
       {/* Logo and Map Button*/}
-      <div className="grid grid-cols-[1fr_auto] w-full md:w-fit items-center md:flex md:gap-8">
+      <div className="grid grid-cols-[auto_1fr_auto] w-full items-center md:flex md:w-fit md:gap-8">
+        {/* Left: compact icon toggle, mobile only */}
+        <div className="justify-self-start md:hidden">
+          <ThemeToggle onClickHandler={toggleTheme} theme={theme} compact />
+        </div>
+
         <Link
-          className="justify-self-center md:justify-self-start z-40 text-2xl md:text-lg font-extrabold tracking-tight"
+          className="justify-self-center md:justify-self-start z-40 text-xl md:text-lg font-extrabold tracking-tight"
           style={{ color: 'var(--text-primary)' }}
           href="/"
         >
           Where's my<span style={{ color: 'var(--jade-600)' }}> Flight?</span>
         </Link>
-        
-        <MapTab pathname={pathname} /> {/* Hidden is located in component className */}
-        <MobileNavDropdown open={mobileNavOpen} onClick={() => setMobileNavOpen(prev => !prev)} />
 
+        <MapTab pathname={pathname} /> {/* Hidden is located in component className */}
+
+        <div className="justify-self-end md:hidden">
+          <MobileNavDropdown open={mobileNavOpen} onClick={() => setMobileNavOpen(prev => !prev)} />
+        </div>
       </div>
 
       {/* Theme Toggle, Login/Acc and SignUp buttons */}
