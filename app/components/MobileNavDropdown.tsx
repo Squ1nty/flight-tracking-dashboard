@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import { useTheme } from "@/app/contextFiles/ThemeContext";
-import ThemeToggle from "@/app/components/ThemeToggle";
 
 type Props = {
   open: boolean;
@@ -40,7 +39,7 @@ export default function MobileNavDropdown({ open, onClick }: Props) {
         }`}
         style={{ background: 'var(--bg-surface)' }}
       >
-        <li className="w-full">
+        <li className="w-full border rounded-md" style={{ borderColor: 'var(--bg-border)' }}>
           <Link
             href="/map"
             onClick={closeMenu}
@@ -54,13 +53,9 @@ export default function MobileNavDropdown({ open, onClick }: Props) {
           </Link>
         </li>
 
-        <li className="w-full flex justify-center py-2">
-          <ThemeToggle onClickHandler={toggleTheme} theme={theme} />
-        </li>
-
         {isLoggedIn ? (
           <>
-            <li className="w-full">
+            <li className="w-full border rounded-md" style={{ borderColor: 'var(--bg-border)' }}>
               <Link
                 href="/account"
                 onClick={closeMenu}
@@ -76,13 +71,13 @@ export default function MobileNavDropdown({ open, onClick }: Props) {
                 {session.user?.name ?? 'Account'}
               </Link>
             </li>
-            <li className="w-full">
+            <li className="w-full border rounded-md" style={{ borderColor: 'var(--bg-border)' }}>
               <button
                 onClick={() => {
                   closeMenu();
                   signOut({ callbackUrl: '/' });
                 }}
-                className="w-full px-4 py-3 rounded-md text-base font-medium transition-all duration-200 hover:bg-[var(--bg-hover)] cursor-pointer"
+                className="w-full px-4 py-3 rounded-mdtext-base font-medium transition-all duration-200 hover:bg-[var(--bg-hover)] cursor-pointer"
                 style={{ color: 'var(--text-secondary)' }}
               >
                 Sign out
@@ -90,8 +85,8 @@ export default function MobileNavDropdown({ open, onClick }: Props) {
             </li>
           </>
         ) : (
-          <>
-            <li className="w-full">
+          <div className='w-full flex gap-2'>
+            <li className="w-full border rounded-md" style={{ borderColor: 'var(--bg-border)' }}>
               <Link
                 href="/login"
                 onClick={closeMenu}
@@ -105,13 +100,13 @@ export default function MobileNavDropdown({ open, onClick }: Props) {
               <Link
                 href="/register"
                 onClick={closeMenu}
-                className="block w-full text-center px-4 py-3 rounded-md text-base font-medium transition-all duration-200"
-                style={{ background: 'var(--jade-600)', color: 'var(--jade-100)' }}
+                className="block w-full text-center px-4 py-3 rounded-md text-base font-medium text-[var(--jade-100)] hover:scale-105 hover:text-white transition-all duration-200"
+                style={{ background: 'var(--jade-600)'}}
               >
                 Sign up
               </Link>
             </li>
-          </>
+          </div>
         )}
       </ul>
     </>
