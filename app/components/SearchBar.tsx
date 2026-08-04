@@ -126,8 +126,8 @@ export default function SearchBar({ initialFlights }: Props) {
             <button
               type="submit"
               aria-label="Search for flight"
-              className="flex-shrink-0 rounded-md px-5 py-2 text-sm font-medium transition-colors duration-150 cursor-pointer"
-              style={{ background: 'var(--jade-600)', color: 'var(--jade-100)' }}
+              className="flex-shrink-0 rounded-md px-5 py-2 text-sm text-[var(--jade-100)] font-medium transition-colors duration-150 cursor-pointer hover:text-white"
+              style={{ background: 'var(--jade-600)'}}
             >
               Search
             </button>

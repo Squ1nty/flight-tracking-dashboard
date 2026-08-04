@@ -30,7 +30,7 @@ export default function SavedFlightsList({
   }
 
   return (
-    <div className="flex h-full flex-col rounded-xl border border-white/10 bg-[var(--surface)] p-4">
+    <div className="flex h-full flex-col rounded-xl border border-[var(--text-muted)] bg-[var(--surface)] p-4">
       <div className="mb-3 flex items-center justify-between">
         <h2 className="text-sm font-medium opacity-80">Saved Flights</h2>
         <span className="text-xs opacity-50">{flights.length}</span>
@@ -38,7 +38,7 @@ export default function SavedFlightsList({
 
       {flights.length === 0 ? (
         <p className="text-sm opacity-60">
-          No saved flights yet. Save one from a flight&apos;s detail page.
+          No saved flights yet. To start, pick a flight!
         </p>
       ) : (
         <div className="flex flex-1 flex-col gap-2 overflow-y-auto pr-1">
