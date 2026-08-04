@@ -63,9 +63,9 @@ export default function SaveFlightButton({
       onClick={handleClick}
       disabled={loading}
       aria-pressed={saved}
-      className="flex items-center gap-1 rounded-lg border border-white/10 px-3 py-1.5 text-sm opacity-80 hover:opacity-100 disabled:opacity-40 cursor-pointer"
+      className="flex items-center rounded-lg border border-white/10 px-3 py-1.5 text-sm opacity-80 hover:opacity-100 disabled:opacity-40 cursor-pointer"
     >
-      {saved ? "★ Saved" : "☆ Save flight"}
+      {saved ? "Saved" : "Save"}
     </button>
     ) : (
       <p
