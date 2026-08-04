@@ -133,7 +133,7 @@ export default async function FlightDetailPage({ params }: Props) {
     <main className="max-w-2xl mx-auto px-6 py-10">
       <BackButton />
 
-      <div className="flex items-start justify-between gap-4">
+      <div className="grid grid-cols-[1fr_auto] items-center justify-between gap-4 mb-6">
         <FlightHeader
           callsign={decoded}
           originCountry={originCountry}

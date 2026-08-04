@@ -14,7 +14,7 @@ export default function FlightHeader({ callsign, originCountry, status }: Props)
   const airline = getAirlineInfo(callsign)
 
   return (
-    <div className="flex items-center justify-between mb-6">
+    <div className="flex items-center justify-between">
       <div className="flex items-center gap-3">
         <AirlineIcon callsign={callsign} />
         <div>
