@@ -43,7 +43,7 @@ export default function AccountPage() {
       <div className="flex flex-col gap-2 py-4 px-8">
         <h1 className="text-4xl font-bold">Account Dashboard</h1>
         <p className="text-lg text-gray-600">
-          Welcome{session?.user?.name ? `, ${session.user.name}` : ""}. Here
+          Welcome{session?.user?.name ? `, ${session.user.name[0].toUpperCase() + session.user.name.slice(1)}` : "Friend"}. Here
           you can manage your account settings, view your activity, and
           access exclusive features.
         </p>
