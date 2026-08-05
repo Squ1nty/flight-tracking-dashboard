@@ -7,11 +7,9 @@ export default function AccountDashboardGrid({
   initialFlights: SavedFlightData[];
 }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-[min(250px, 1fr)_min(250px, 1fr)] xl:grid-cols-4 gap-4">
+    <div className="h-full w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 xl:grid-cols-6 xl:grid-rows-[125px_125px_1fr] gap-4">
       {/* Right-hand column on md+, last section on mobile */}
-      <div className="order-last md:col-start-2 lg:col-start-3 lg:row-start-1 lg:row-end-3 xl:col-start-4">
-        <SavedFlightsList initialFlights={initialFlights} />
-      </div>
+      <SavedFlightsList initialFlights={initialFlights} />
 
       {/* Other tiles (total saved, airlines tracked, currently airborne, etc.)
           slot in here as siblings once built */}

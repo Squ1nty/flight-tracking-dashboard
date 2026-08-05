@@ -30,7 +30,7 @@ export default function SavedFlightsList({
   }
 
   return (
-    <div className="flex h-full flex-col rounded-xl border border-[var(--text-muted)] bg-[var(--surface)] p-4">
+    <div className="flex h-full w-full flex-col rounded-xl border border-[var(--text-muted)] bg-[var(--surface)] p-4 xl:row-start-1 xl:row-end-3 xl:col-start-4 xl:col-end-7">
       <div className="mb-3 flex items-center justify-between">
         <h2 className="text-sm font-medium opacity-80">Saved Flights</h2>
         <span className="text-xs opacity-50">{flights.length}</span>
