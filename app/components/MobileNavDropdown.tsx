@@ -43,16 +43,25 @@ export default function MobileNavDropdown({ open, onClick }: Props) {
           <Link
             href="/map"
             onClick={closeMenu}
-            className={`flex justify-between w-full px-4 py-3 rounded-md text-lg font-medium transition-all duration-200 ${
+            className={`flex justify-between w-full px-4 py-3 rounded-md text-lg font-medium active:translate-0.5 transition-all duration-200 ${
               pathname === '/map'
                 ? 'bg-[var(--jade-800)] text-[var(--jade-100)]'
                 : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
+            }
+            ${
+              theme === 'dark'
+              ?
+              'shadow-[2px_2px_0px_0px_rgba(0,0,0,0.15)]'
+              :
+              'shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]'
             }`}
           >
             Map
             <span>&gt;</span>
           </Link>
         </li>
+
+        <hr className='w-full my-4 border-[var(--text-muted)] opacity-25'></hr>
 
         {isLoggedIn ? (
           <div className='w-full flex gap-4'>
@@ -93,7 +102,7 @@ export default function MobileNavDropdown({ open, onClick }: Props) {
               <Link
                 href="/login"
                 onClick={closeMenu}
-                className="block w-full text-center px-4 py-3 rounded-md text-base text-[var(--text-secondary)] font-medium transition-all duration-200 hover:bg-[var(--bg-hover)] hover:text-white"
+                className="block w-full text-center px-4 py-3 rounded-md text-base text-[var(--text-secondary)] font-medium transition-all duration-200 hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]"
               >
                 Log in
               </Link>

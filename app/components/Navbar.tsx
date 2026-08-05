@@ -72,7 +72,12 @@ export default function Navbar() {
               >
                 {session.user?.name?.[0].toUpperCase() ?? 'U'}
               </div>
-              {session.user?.name ?? 'Account'}
+              {
+                session.user?.name
+                ? session.user.name[0].toUpperCase() + session.user.name.slice(1) 
+                : 
+                'Account'
+              }
             </Link>
             <button
               onClick={() => signOut({ callbackUrl: '/' })}
