@@ -21,6 +21,7 @@ input:-webkit-autofill:active {
   --bg-surface: #edf2f7;
   --bg-hover:   #dde5ef;
   --bg-border:  #cbd5e0;
+  --dashboard-tile-bg: #eaeaea;
 
   /* Text */
   --text-primary:   #1a202c;
@@ -46,6 +47,7 @@ input:-webkit-autofill:active {
   --bg-surface: #1e1e1e;
   --bg-hover:   #272727;
   --bg-border:  #333333;
+  --dashboard-tile-bg: #242424;
 
   /* Text */
   --text-primary:   #e6edf3;
