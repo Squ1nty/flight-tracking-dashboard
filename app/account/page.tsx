@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import AccountDashboardGrid from "../components/accountGridComponents/AccountDashboardGrid"
-import type { SavedFlightData } from "../components/accountGridComponents/SavedFlightsList"
+import type { SavedFlightData } from "../components/accountGridComponents/SavedFlights/SavedFlightsList"
 
 export default function AccountPage() {
   const { data: session, status } = useSession()
