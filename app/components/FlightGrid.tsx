@@ -39,7 +39,7 @@ export default function FlightGrid({ flights }: Props) {
             <Link href={`/flight/${flight.callsign}`} key={flight.icao24} className="block">
               <article
                 key={flight.icao24}
-                className={`rounded-lg overflow-hidden border transition-all duration-300 hover:border-[var(--jade-600-low-opa)] shadow-md hover:shadow-lg hover:translate-y-[-3px] cursor-pointer active:scale-95 active:shadow-sm ${
+                className={`relative rounded-lg overflow-hidden border transition-all duration-300 hover:border-[var(--jade-600-low-opa)] shadow-md hover:shadow-lg hover:translate-y-[-3px] cursor-pointer active:scale-95 active:shadow-sm ${
                   dark
                     ? 'bg-[var(--bg-surface)] border-[var(--bg-border)]'
                     : 'bg-white border-[var(--bg-border)]'
@@ -52,23 +52,21 @@ export default function FlightGrid({ flights }: Props) {
                 >
                   <AirlineIcon callsign={flight.callsign} size={72} />
                 </div>
+                {airline?.isFifo && (
+                  <span
+                    className="absolute top-4 right-4 text-xs px-1.5 py-0.5 rounded font-medium"
+                    style={{ background: '#3d1a0a', color: '#C1440E' }}
+                  >
+                    FIFO
+                  </span>
+                )}
 
                 <div className="p-3 border-t" style={{ borderColor: 'var(--bg-border)' }}>
-                  <div className="flex items-center mb-0.5">
+                  <div className="flex items-center justify-between mb-0.5">
                     <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
                       {flight.callsign || 'N/A'}
                     </p>
-                    <div className="ml-auto flex gap-2 items-center">
-                      {airline?.isFifo && (
-                        <span
-                          className="text-xs px-1.5 py-0.5 rounded font-medium"
-                          style={{ background: '#3d1a0a', color: '#C1440E' }}
-                        >
-                          FIFO
-                        </span>
-                      )}
-                      <FlightStatusPill status={status} />
-                    </div>
+                    <FlightStatusPill status={status} />
                   </div>
                   <p className="text-xs mb-3" style={{ color: 'var(--text-secondary)' }}>
                     {airline?.name ?? 'Unknown Airline'} · {flight.origin_country}
