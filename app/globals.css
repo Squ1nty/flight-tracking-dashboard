@@ -2,6 +2,7 @@
 
 @theme {
   --font-sans: var(--font-nunito-sans);
+  --breakpoint-xs: 375px;
 }
 
 /* Override browser autofill styles */

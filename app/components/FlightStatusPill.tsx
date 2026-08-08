@@ -1,9 +1,11 @@
 // app/components/FlightStatusPill.tsx
 
 type Status = 'Airborne' | 'On ground' | 'Departing' | 'Arrived' | 'Taxiing' | 'N/A'
+type Size = 'sm' | 'lg'
 
 type Props = {
   status: Status
+  size?: Size
 }
 
 const STATUS_STYLES: Record<Status, { bg: string; text: string }> = {
@@ -15,11 +17,16 @@ const STATUS_STYLES: Record<Status, { bg: string; text: string }> = {
   'N/A':       { bg: '#1a1a2e', text: '#8b949e' },
 }
 
-export default function FlightStatusPill({ status }: Props) {
+const SIZE_STYLES: Record<Size, string> = {
+  sm: 'text-[10px] px-2 py-0.5 whitespace-nowrap',
+  lg: 'text-sm px-3 py-1',
+}
+
+export default function FlightStatusPill({ status, size='lg' }: Props) {
   const style = STATUS_STYLES[status] ?? STATUS_STYLES['N/A']
   return (
     <span
-      className="text-xs px-3 py-1 rounded-full font-medium"
+      className={`rounded-full font-medium ${SIZE_STYLES[size]}`}
       style={{ background: style.bg, color: style.text }}
     >
       {status}

@@ -18,6 +18,10 @@ export default function FlightGrid({ flights }: Props) {
 
   if (!flights || flights.length === 0) return null
 
+  function truncateAirlineName(name: string, maxChars: number) {
+    return name.length > maxChars ? `${name.slice(0, maxChars)}…` : name
+  }
+
   return (
     <section aria-label="Suggested flights" className="w-full mt-8">
       <h2
@@ -54,7 +58,7 @@ export default function FlightGrid({ flights }: Props) {
                 </div>
                 {airline?.isFifo && (
                   <span
-                    className="absolute top-4 right-4 text-xs px-1.5 py-0.5 rounded font-medium"
+                    className="absolute top-1 right-1 sm:top-4 sm:right-4 text-xs px-1.5 py-0.5 rounded font-medium"
                     style={{ background: '#3d1a0a', color: '#C1440E' }}
                   >
                     FIFO
@@ -63,13 +67,21 @@ export default function FlightGrid({ flights }: Props) {
 
                 <div className="p-3 border-t" style={{ borderColor: 'var(--bg-border)' }}>
                   <div className="flex items-center justify-between mb-0.5">
-                    <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
+                    <p className="text-[12px] font-semibold sm:text-sm" style={{ color: 'var(--text-primary)' }}>
                       {flight.callsign || 'N/A'}
                     </p>
-                    <FlightStatusPill status={status} />
+                    <FlightStatusPill status={status} size="sm" />
                   </div>
-                  <p className="text-xs mb-3" style={{ color: 'var(--text-secondary)' }}>
-                    {airline?.name ?? 'Unknown Airline'} · {flight.origin_country}
+                  <p className="text-xs mb-3 whitespace-nowrap" style={{ color: 'var(--text-secondary)' }}>
+                    <span className="xs:hidden">
+                      {truncateAirlineName(
+                        `${airline?.name ?? 'Unknown Airline'} · ${flight.origin_country}`,
+                        15
+                      )}
+                    </span>
+                    <span className="hidden xs:inline">
+                      {airline?.name ?? 'Unknown Airline'} · {flight.origin_country}
+                    </span>
                   </p>
 
                   <div className="space-y-1.5 text-xs">
