@@ -22,14 +22,24 @@ const SIZE_STYLES: Record<Size, string> = {
   lg: 'text-sm px-3 py-1',
 }
 
-export default function FlightStatusPill({ status, size='lg' }: Props) {
+export default function FlightStatusPill({ status, size = 'lg' }: Props) {
   const style = STATUS_STYLES[status] ?? STATUS_STYLES['N/A']
+  
+  const isOnGround = status === 'On ground'
+
   return (
     <span
-      className={`rounded-full font-medium ${SIZE_STYLES[size]}`}
+      className={`rounded-full font-medium whitespace-nowrap ${SIZE_STYLES[size]}`}
       style={{ background: style.bg, color: style.text }}
     >
-      {status}
+      {isOnGround ? (
+        <>
+          <span className="xs:hidden">Ground</span>
+          <span className="hidden xs:inline">On ground</span>
+        </>
+      ) : (
+        status
+      )}
     </span>
   )
 }

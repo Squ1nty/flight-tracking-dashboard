@@ -21,7 +21,7 @@ export default async function Home() {
   )
 
   return (
-    <main className="max-w-[1400px] mx-auto px-6 py-10 w-full">
+    <main className="max-w-[1400px] mx-auto px-6 py-10 w-full h-full flex flex-col flex-1 min-h-0">
       <SearchBar initialFlights={flights} />
       <SuggestedFlights initialFlights={flights} />
     </main>
