@@ -23,13 +23,7 @@ export default function Navbar() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
 
   return (
-    <nav
-      className={`sticky top-0 left-0 right-0 z-10 w-full px-8 py-4 flex items-center justify-between border-b ${
-        dark
-          ? 'bg-[var(--bg-surface)] border-[var(--bg-border)]'
-          : 'bg-[var(--bg-surface)] border-[var(--bg-border)]'
-      }`}
-    >
+    <nav className='sticky top-0 left-0 right-0 bg-[var(--bg-surface)] z-30 w-full px-8 py-4 flex items-center justify-between border-b border-[var(--bg-border)]'>
       {/* Logo and Map Button*/}
       <div className="grid grid-cols-[auto_1fr_auto] w-full items-center md:flex md:w-fit md:gap-8">
         {/* Left: compact icon toggle, mobile only */}
@@ -98,8 +92,8 @@ export default function Navbar() {
             </Link>
             <Link
               href="/register"
-              className="px-4 py-2 rounded-md text-sm font-medium transition-all duration-200"
-              style={{ background: 'var(--jade-600)', color: 'var(--jade-100)' }}
+              className="px-4 py-2 rounded-md text-sm text-[var(--jade-100)] font-medium hover:text-white hover:scale-105 transition-all duration-200"
+              style={{ background: 'var(--jade-600)' }}
             >
               Sign up
             </Link>
