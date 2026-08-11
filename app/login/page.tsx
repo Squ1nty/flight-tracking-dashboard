@@ -1,4 +1,5 @@
 // app/login/page.tsx
+import { Suspense } from 'react'
 import Link from 'next/link'
 import LoginForm from './LoginForm'
 
@@ -46,7 +47,9 @@ export default function LoginPage() {
           </p>
         </div>
 
-        <LoginForm />
+        <Suspense fallback={null}>
+          <LoginForm />
+        </Suspense>
 
         <p className="text-sm mt-6 text-center" style={{ color: 'rgba(255,255,255,0.4)' }}>
           Don't have an account?{' '}
