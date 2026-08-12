@@ -87,6 +87,7 @@ models/                           # Mongoose schemas (User, SavedFlight)
 - AviationStack's free tier occasionally returns mismatched recurring flight numbers, which was mitigated with date and airport matching
 - OpenSky ground coverage is sparse outside major airports — regional/mining airstrips often show no tracked aircrafts
 - OpenSky's anonymous tier has a fairly low rate limit; expect occasional 429 codes during heavy testing
+- Note* that OpenSky blocks hyperscaler IP ranges including Vercel's, and built graceful fallback handling for when live data is unavailable
 
 ## License
 
