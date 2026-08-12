@@ -33,6 +33,15 @@ export default function MobileNavDropdown({ open, onClick }: Props) {
         <span className={`absolute h-0.5 w-6 rounded-full bg-current transition-transform duration-200 ${open ? "-rotate-45" : "translate-y-2"}`} />
       </button>
 
+      {/* Backdrop — dims the rest of the app while the menu is open */}
+      <div
+        onClick={closeMenu}
+        aria-hidden="true"
+        className={`fixed z-10 top-[65px] bottom-0 left-0 right-0 bg-black transition-opacity duration-300 md:hidden ${
+          open ? "opacity-40 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+      />
+
       <ul
         className={`fixed z-10 top-[65px] bottom-0 right-0 w-3/4 sm:w-[70%] flex flex-col items-center gap-2 pt-8 px-8 transition-transform duration-300 md:hidden ${
           open ? "translate-x-0" : "translate-x-full"
@@ -43,20 +52,11 @@ export default function MobileNavDropdown({ open, onClick }: Props) {
           <Link
             href="/map"
             onClick={closeMenu}
-            className={`group flex justify-between items-center w-full px-4 py-2 rounded-md text-xl font-medium transition-all duration-200 ${
-              pathname === '/map'
-                ? 'bg-[var(--jade-800)] text-[var(--jade-100)]'
-                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-            }`}
+            className='group flex justify-between items-center w-full px-4 py-2 rounded-md text-xl font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all duration-200'
           >
             Map
             <span
-              className={`transition-all duration-200 ${
-                pathname === '/map'
-                  ? 'opacity-100'
-                  : 'opacity-0 group-hover:opacity-100 text-[var(--text-muted)] group-hover:text-[var(--text-primary)]'
-              }`}
-            >
+              className='transition-all duration-300 opacity-0 group-hover:opacity-100 text-[var(--text-muted)] group-hover:text-[var(--text-primary)]'>
               &gt;
             </span>
           </Link>

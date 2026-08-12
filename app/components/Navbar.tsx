@@ -23,7 +23,7 @@ export default function Navbar() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
 
   return (
-    <nav className='sticky top-0 left-0 right-0 bg-[var(--bg-surface)] z-30 w-full px-8 py-4 flex items-center justify-between border-b border-[var(--bg-border)]'>
+    <nav className='sticky top-0 left-0 right-0 bg-[var(--bg-surface)] z-[9999] w-full px-8 py-4 flex items-center justify-between border-b border-[var(--bg-border)]'>
       {/* Logo and Map Button*/}
       <div className="grid grid-cols-[auto_1fr_auto] w-full items-center md:flex md:w-fit md:gap-8">
         {/* Left: compact icon toggle, mobile only */}
