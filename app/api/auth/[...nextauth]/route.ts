@@ -34,6 +34,19 @@ export const authOptions = {
   session: {
     strategy: 'jwt' as const,
   },
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+        // no maxAge/expires — makes it a browser session cookie,
+        // cleared when the browser fully closes rather than persisting
+      },
+    },
+  },
   callbacks: {
     async jwt({ token, user }: any) {
       if (user) {
